@@ -1,0 +1,53 @@
+{
+    "origenModificacion": "SAP",
+    "idTransporte":"1970049",
+    "fechaHora":"02.01.2021",
+    "estadoTransporte":"Modificado",
+    "idCentroDistribucion": "54",
+    "centroDistribucion": "Carlos Valdovinos",
+    "idCamion":"T937",
+        "pallet": [
+            {
+                "idPallet":"1",
+                "tipoPallet":"0",
+                "idOla":"20210104043552.00",
+                "prioridadArmadoPallet":"0",
+                "bahiaDestinoPallet":"56",
+                "remonte":"0",
+                "palletRemonte":"0",
+                "totalCapas":"0",
+                "contenidoPallet": [
+                    {
+                    "secuenciaPicking":"1",
+                    "capaSku":"0",
+                    "sku":"Coca Cola Personal 350cc x 24",
+                    "glosaSku":"0",
+                    "cantidad":"1",
+                    "conversion":"0",
+                    "unidadDeMedida":"0",
+                    "NroPallet":"1",
+                    "ubicacion":[
+                        "ubicacion1",
+                        "ubicacion2",
+                        "ubicacion3"
+                    ]
+                },
+                {
+                    "secuenciaPicking":"2",
+                    "capaSku":"0",
+                    "sku":"Fanta Personal 350cc x 24",
+                    "glosaSku":"0",
+                    "cantidad":"1",
+                    "conversion":"0",
+                    "unidadDeMedida":"0",
+                    "NroPallet":"1",
+                    "ubicacion":[
+                    "ubicacion1",
+                    "ubicacion2",
+                    "ubicacion3"
+                    ]
+                }
+            ]
+        }
+    ]
+}

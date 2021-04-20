@@ -43,3 +43,20 @@ exports.validarPalletMixto = async function(data:any) {
     return result;
 
 }
+
+exports.validarCambioFecha = async function(data:any) {
+    var jv = new JSONValidation();
+    var schema = {
+        type: "object",
+        properties: {
+            origenModificacion: { type: "string", required: true },
+            idTransporte: { type: "string", required: true },
+            fechaHora: { type: "string", required: true },
+            estadoTransporte: { type: "string", required: true },
+            idCentroDistribucion: { type: "string", required: true },
+            centroDistribucion: { type: "string", required: true },
+            idCamion: { type: "string", required: true }
+        }
+    };
+    return jv.validate(data, schema);
+}
