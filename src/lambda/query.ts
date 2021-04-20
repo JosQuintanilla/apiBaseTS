@@ -33,23 +33,21 @@ const anularCamion = async (idTransporteSap : string) => {
     });
 }
 
-const insertCamion = async (idTransporteSap : string, idCamion: string) => {
+const insertCamion = async (transporte:any, idTransporte:any) => {
     return new Promise((resolve, reject) => {
         let id = 0;
-        const sql = `INSERT INTO db.Camion 
+        const sql = `INSERT INTO db.Camion
         (numero_camion,
         fecha_camion,
         estado_camion,
         fk_transporte)
-        VALUES ('${idCamion}',
-        now(),
-        '${estadoCamion.activo}',
-        (select MAX(t.id_transporte) as id_transporte 
-        from db.Transporte t 
-        where t.numero_transporte = '${idTransporteSap}'
-        and t.estado_transporte = '${estadoCamion.activo}'))`;
+        VALUES 
+        ( '${transporte.idCamion}',
+        '${transporte.fechaHora}',
+        '${estado.activo}',
+        '${idTransporte}')`;
 
-        connection.query(sql, (err:any, results:any) => {
+        connection.query(sql, (err, results) => {
             if (err) {
                 reject(err);
             }
