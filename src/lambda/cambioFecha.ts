@@ -25,6 +25,7 @@ export const cambioFecha = async () =>{
             console.log('resultCambioFecha :', resultCambioFecha);
         } catch (error) {
             console.error("Error anulando la fecha: ",error );
+            return "Error anulando la fecha: " ;
         }      
         try {
             const resultInsertFecha = await execQuery.insertFechaTransporte(idTransporteSap, fechaHora);
@@ -40,10 +41,12 @@ export const cambioFecha = async () =>{
         }
         catch(err) {
             console.error("Error insertando fecha: ",err );
+            return "Error insertando la fecha: " ;
         }
 
     } catch (error) {
         console.error("Error general anulando el pallet: "+ error );
+        return "Error general" ;
     }
 
 }

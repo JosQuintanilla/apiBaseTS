@@ -157,29 +157,6 @@ const verifyCamionExist = async  (transporte:any) => {
 }
 
 
-const insertFechaTransporte = async (transporte:any, idTransporte:string) => {
-    return new Promise((resolve, reject) => {
-        let id = 0;
-        const sql = `INSERT INTO db.Fecha_Transporte
-        (fecha_transporte,
-        estado_fecha_transporte,
-        fk_transporte)
-        VALUES 
-        ('${transporte.fechaHora}',
-        '${estado.activo}',
-        '${idTransporte}')`;
-
-        connection.query(sql, (err, results) => {
-            if (err) {
-                reject(err);
-            }
-            if (results != undefined && results != null && results.insertId > 0) {
-                id = results.insertId;
-            }
-            resolve(id);
-        });
-    });
-}
 
 
 const verifyPalletExist = async (pallet:any, idTransporte:string) => {
@@ -432,12 +409,64 @@ const verifyFechaTransporteExist = async  (transporte:any) => {
     });
 }
 
+const anularFechaTransporte = async (idTransporteSap : string) => {
+    return new Promise((resolve, reject) => {
+        console.log('anularFechaTransporte');
+        let rowAffected = 0;
+        const sql = `UPDATE db.Fecha_Transporte 
+        SET estado_fecha_transporte = '${estado.inactivo}'
+        WHERE id_fecha_transporte = (select temp.id_fecha_transporte from (select MAX(f.id_fecha_transporte) as id_fecha_transporte 
+                            from db.Fecha_Transporte f 
+                            where f.fk_transporte = (select MAX(t.id_transporte) as id_transporte 
+                                        from db.Transporte t 
+                                        where t.numero_transporte = '${idTransporteSap}'
+                                        and t.estado_transporte = '${estado.activo}')
+                            and f.estado_fecha_transporte = '${estado.activo}') temp)`;
+
+        connection.query(sql, (err, results) => {
+            if (err) {
+                reject(err);
+            }
+            if (results != undefined && results != null && results.affectedRows > 0) {
+                rowAffected = results.affectedRows;
+            }
+            resolve(rowAffected);
+        });
+    });
+}
+
+const insertFechaTransporte = async (idTransporteSap : string, fechaHora: string) => {
+    return new Promise((resolve, reject) => {
+        console.log('insertFechaTransporte');
+        let id = 0;
+        const sql = `INSERT INTO db.Fecha_Transporte 
+        (fecha_transporte,
+        estado_fecha_transporte,
+        fk_transporte)
+        VALUES ('${fechaHora}',
+        '${estado.activo}',
+        (select MAX(t.id_transporte) as id_transporte 
+        from db.Transporte t 
+        where t.numero_transporte = '${idTransporteSap}'
+        and t.estado_transporte = '${estado.activo}'))`;
+
+        connection.query(sql, (err:any, results:any) => {
+            if (err) {
+                reject(err);
+            }
+            if (results != undefined && results != null && results.insertId > 0) {
+                id = results.insertId;
+            }
+            resolve(id);
+        });
+    });
+}
+
 module.exports = { 
     verifyTransporteExist,
     insertTransporte,
     verifyCamionExist,
     verifyFechaTransporteExist,
-    insertFechaTransporte,
     verifyPalletExist,
     insertPallet,
     verifyCapaExist,
@@ -445,5 +474,7 @@ module.exports = {
     verifyProductoCapaExist,
     insertProductoCapa,
     anularCamion, 
-    insertCamion
+    insertCamion,
+    anularFechaTransporte,
+    insertFechaTransporte
 }
